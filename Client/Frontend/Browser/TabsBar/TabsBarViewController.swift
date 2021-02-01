@@ -21,7 +21,8 @@ class TabsBarViewController: UIViewController {
     
     private let leftOverflowIndicator = CAGradientLayer()
     private let rightOverflowIndicator = CAGradientLayer()
-    
+    private var isDarkThemed: Bool = false
+
     weak var delegate: TabsBarViewControllerDelegate?
     
     private lazy var plusButton: UIButton = {
@@ -132,7 +133,10 @@ class TabsBarViewController: UIViewController {
 
         if #available(iOS 13.0, *) {
             if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                applyTheme(Theme.of(tabManager?.selectedTab))
+                let theme = Theme.of(tabManager?.selectedTab)
+                isDarkThemed = theme.isDark
+                
+                applyTheme(theme)
             }
         }
     }
@@ -315,7 +319,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
         cell.titleLabel.text = tab.displayTitle
         cell.currentIndex = indexPath.row
         cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
-        cell.applyTheme(Theme.of(tab))
+        cell.setTheme(isDarkThemed)
 
         cell.closeTabCallback = { [weak self] tab in
             guard let self = self,
@@ -373,20 +377,18 @@ extension TabsBarViewController: TabManagerDelegate {
 }
 
 extension TabsBarViewController: Themeable {
-    var themeableChildren: [Themeable?]? {
-        collectionView.visibleCells.compactMap({ $0 as? TabBarCell })
-    }
     
     func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
+        isDarkThemed = theme.isDark
+
         view.backgroundColor = theme.colors.header
         plusButton.tintColor = theme.colors.tints.header
         bottomLine.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
         collectionView.backgroundColor = view.backgroundColor
-        // Updates overflow colors too
-        overflowIndicators()
         
         collectionView.reloadData()
+        
+        // Updates overflow colors too
+        overflowIndicators()
     }
 }
