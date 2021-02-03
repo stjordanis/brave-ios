@@ -248,11 +248,6 @@ class UserTextInputAlert {
                         attributes: [.foregroundColor: UIColor.placeholderText])
                 } else {
                     textField.placeholder = placeholder
-                    
-                    if PrivateBrowsingManager.shared.isPrivateBrowsing {
-                        UITextField.appearance(whenContainedInInstancesOf: [UIAlertController.self]).defaultTextAttributes =
-                            [.foregroundColor: UIColor.black]
-                    }
                 }
                 
                 textField.keyboardAppearance = .default
