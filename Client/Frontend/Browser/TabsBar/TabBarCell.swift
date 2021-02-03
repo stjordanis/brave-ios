@@ -131,9 +131,17 @@ class TabBarCell: UICollectionViewCell {
     }
     
     func setTheme(_ isDark: Bool) {
-        backgroundColor = .clear
-        
-        titleLabel.textColor = isDark ? .white : .black
-        closeButton.tintColor = isDark ? .white : .black
+        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+            backgroundColor = UIColor(rgb: 0x1B0C32)
+            
+            titleLabel.textColor = UIColor(rgb: 0xE7E6E9)
+            closeButton.tintColor = UIColor(rgb: 0xE7E6E9)
+        } else {
+            backgroundColor = isDark ? UIColor(rgb: 0x282828) : UIColor(rgb: 0xf4f4f4)
+            
+            titleLabel.textColor = isDark ? UIColor(rgb: 0xE7E6E9) : UIColor(rgb: 0x434351)
+            closeButton.tintColor = isDark ? UIColor(rgb: 0xE7E6E9) : UIColor(rgb: 0x434351)
+        }
     }
 }
+
