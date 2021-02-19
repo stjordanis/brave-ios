@@ -21,6 +21,7 @@ import SafariServices
 import BraveUI
 import NetworkExtension
 import YubiKit
+import CoreData
 
 private let log = Logger.browserLogger
 
@@ -153,6 +154,8 @@ class BrowserViewController: UIViewController {
     
     /// Number of Ads/Trackers used a limit to show benchmark notification
     let benchmarkNumberOfTrackers = 10
+
+    private(set) lazy var navigationHelper = BrowserNavigationHelper(self)
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -403,7 +406,21 @@ class BrowserViewController: UIViewController {
                 }
             }
         }
+        
+        if #available(iOS 14.0, *) {
+            widgetBookmarksFRC = Favorite.frc()
+            widgetBookmarksFRC?.fetchRequest.fetchLimit = 16
+            widgetBookmarksFRC?.delegate = self
+            try? widgetBookmarksFRC?.performFetch()
+            
+            if !FavoritesWidgetData.dataExists {
+                updateWidgetFavoritesData()
+            }
+        }
     }
+    
+    private var widgetBookmarksFRC: NSFetchedResultsController<Favorite>?
+    private var widgetFaviconFetchers: [FaviconFetcher] = []
     
     let deviceCheckClient: DeviceCheckClient?
     
@@ -1780,7 +1797,7 @@ class BrowserViewController: UIViewController {
         }
     }
 
-    fileprivate func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+    func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
         let helper = ShareExtensionHelper(url: url, tab: tab)
         
         let findInPageActivity = FindInPageActivity() { [unowned self] in
@@ -2364,11 +2381,9 @@ extension BrowserViewController: TopToolbarDelegate {
         let popover = PopoverController(contentController: container, contentSizeBehavior: .preferredContentSize)
         popover.present(from: topToolbar.locationView.shieldsButton, on: self)
     }
-    
-    // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
-    // See: https://github.com/brave/brave-ios/issues/1452
+  
     func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-        showBookmarkController()
+        navigationHelper.openBookmarks()
     }
     
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
@@ -2403,31 +2418,7 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressShare() {
-        func share(url: URL) {
-            presentActivityViewController(
-                url,
-                tab: url.isFileURL ? nil : tabManager.selectedTab,
-                sourceView: view,
-                sourceRect: view.convert(topToolbar.menuButton.frame, from: topToolbar.menuButton.superview),
-                arrowDirection: [.up]
-            )
-        }
-        
-        guard let tab = tabManager.selectedTab, let url = tab.url else { return }
-        
-        if let temporaryDocument = tab.temporaryDocument {
-            temporaryDocument.getURL().uponQueue(.main, block: { tempDocURL in
-                // If we successfully got a temp file URL, share it like a downloaded file,
-                // otherwise present the ordinary share menu for the web URL.
-                if tempDocURL.isFileURL {
-                    share(url: tempDocURL)
-                } else {
-                    share(url: url)
-                }
-            })
-        } else {
-            share(url: url)
-        }
+        navigationHelper.openShareSheet()
     }
     
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
@@ -3667,5 +3658,38 @@ extension BrowserViewController: UNUserNotificationCenterDelegate {
             UIApplication.shared.open(settingsUrl)
         }
         completionHandler()
+    }
+}
+
+extension BrowserViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if #available(iOS 14.0, *) {
+            updateWidgetFavoritesData()
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    private func updateWidgetFavoritesData() {
+        guard let frc = widgetBookmarksFRC else { return }
+        try? frc.performFetch()
+        if let favs = frc.fetchedObjects {
+            let group = DispatchGroup()
+            var favData: [WidgetFavorite] = []
+            favs.prefix(16).forEach { fav in
+                if let url = fav.url?.asURL {
+                    group.enter()
+                    let fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon)
+                    widgetFaviconFetchers.append(fetcher)
+                    fetcher.load { _, attributes in
+                        favData.append(.init(url: url, favicon: attributes))
+                        group.leave()
+                    }
+                }
+            }
+            group.notify(queue: .main) { [self] in
+                widgetFaviconFetchers.removeAll()
+                FavoritesWidgetData.updateWidgetData(favData)
+            }
+        }
     }
 }
