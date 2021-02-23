@@ -358,6 +358,8 @@
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
 		27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */; };
+		27AE35F625E470C000E795E5 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 27AE35F525E470C000E795E5 /* PanModal */; };
+		27AE360D25E55AA200E795E5 /* NewMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE360C25E55AA200E795E5 /* NewMenuViewController.swift */; };
 		27B16C5924E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */; };
 		27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */; };
 		27B3DDD524AF98EA0006A7ED /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDD424AF98EA0006A7ED /* FeedItem.swift */; };
@@ -1818,6 +1820,7 @@
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
 		27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedActionAlertView.swift; sourceTree = "<group>"; };
+		27AE360C25E55AA200E795E5 /* NewMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMenuViewController.swift; sourceTree = "<group>"; };
 		27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageFeedOverlayView.swift; sourceTree = "<group>"; };
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
 		27B3DDD424AF98EA0006A7ED /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
@@ -2709,6 +2712,7 @@
 				27756BEA25AD14B600C129AF /* GCDWebServers in Frameworks */,
 				277568F125ACF92400C129AF /* XCGLogger in Frameworks */,
 				27756B0F25AD08FA00C129AF /* SDWebImage in Frameworks */,
+				27AE35F625E470C000E795E5 /* PanModal in Frameworks */,
 				277568F925ACF92400C129AF /* SwiftKeychainWrapper in Frameworks */,
 				27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */,
 				277568F325ACF92400C129AF /* Fuzi in Frameworks */,
@@ -4631,6 +4635,7 @@
 				44331DBA22521013007E3E93 /* MenuViewController.swift */,
 				0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */,
 				0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */,
+				27AE360C25E55AA200E795E5 /* NewMenuViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -5600,6 +5605,7 @@
 				27756B0E25AD08FA00C129AF /* SDWebImage */,
 				27756BE925AD14B600C129AF /* GCDWebServers */,
 				27F4798B25AF94B0004922E4 /* YubiKit */,
+				27AE35F525E470C000E795E5 /* PanModal */,
 			);
 			productName = SPMLibraries;
 			productReference = 277568D025ACF91500C129AF /* SPMLibraries.framework */;
@@ -6008,6 +6014,7 @@
 				27756B0D25AD08FA00C129AF /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				27756BE825AD14B600C129AF /* XCRemoteSwiftPackageReference "GCDWebServer" */,
 				27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */,
+				27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -6885,6 +6892,7 @@
 				27036F9B25684F9F004EF6B6 /* AdsNotificationHandler.swift in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
 				0A0D3D5221A565C300BEE65B /* SafeBrowsingHandler.swift in Sources */,
+				27AE360D25E55AA200E795E5 /* NewMenuViewController.swift in Sources */,
 				0AFC8F9E23D3762B00941895 /* NTPNotificationViewController.swift in Sources */,
 				27829E152548AD52007CF0B2 /* LegacyWalletTransferButton.swift in Sources */,
 				2FEA1613259CDFE800E00E4D /* SearchCustomEngineViewController.swift in Sources */,
@@ -12457,6 +12465,14 @@
 				revision = db86712dfe62bce7d805ad90faa0786502ef88f9;
 			};
 		};
+		27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/slackhq/PanModal";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.7;
+			};
+		};
 		27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Yubico/yubikit-ios";
@@ -12517,6 +12533,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 27756BE825AD14B600C129AF /* XCRemoteSwiftPackageReference "GCDWebServer" */;
 			productName = GCDWebServers;
+		};
+		27AE35F525E470C000E795E5 /* PanModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */;
+			productName = PanModal;
 		};
 		27F4798B25AF94B0004922E4 /* YubiKit */ = {
 			isa = XCSwiftPackageProductDependency;

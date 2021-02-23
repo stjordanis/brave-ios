@@ -2431,11 +2431,16 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
-        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
-        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
-        // Not dynamic, but trivial at this point, given how UI is currently setup
-        popover.color = Theme.of(tabManager.selectedTab).colors.home
-        popover.present(from: tabToolbar.menuButton, on: self)
+        if #available(iOS 13.0, *) {
+            let menuController = NewMenuHostingController(bvc: self)
+//            present(menuController, animated: true)
+            presentPanModal(menuController, sourceView: tabToolbar.menuButton, sourceRect: tabToolbar.menuButton.bounds)
+        }
+//        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
+//        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
+//        // Not dynamic, but trivial at this point, given how UI is currently setup
+//        popover.color = Theme.of(tabManager.selectedTab).colors.home
+//        popover.present(from: tabToolbar.menuButton, on: self)
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {

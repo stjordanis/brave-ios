@@ -41,12 +41,12 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private var shieldsUpSwitch: ShieldsSwitch {
@@ -193,10 +193,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
         shieldsView.setNeedsLayout()
         shieldsView.layoutIfNeeded()
         
-        preferredContentSize = CGSize(
-            width: width,
-            height: visibleView.bounds.height
-        )
+//        preferredContentSize = CGSize(
+//            width: width,
+//            height: visibleView.bounds.height
+//        )
     }
     
     // MARK: -
@@ -255,8 +255,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
         shieldsView.reportBrokenSiteView.submitButton.addTarget(self, action: #selector(tappedSubmitReportingButton), for: .touchUpInside)
         
         updateShieldBlockStats()
-        
-        navigationController?.setNavigationBarHidden(true, animated: false)
         
         updateToggleStatus()
         
