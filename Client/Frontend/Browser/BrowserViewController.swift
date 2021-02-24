@@ -223,7 +223,6 @@ class BrowserViewController: UIViewController {
         didInit()
         
         rewards.delegate = self
-        rewards.createWalletIfNeeded()
     }
     
     static func legacyWallet(for config: BraveRewardsConfiguration) -> BraveLedger? {
